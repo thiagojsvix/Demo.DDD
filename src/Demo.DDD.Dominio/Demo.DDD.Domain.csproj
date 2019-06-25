@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectGuid>{364D486B-0920-4898-A53F-507F3C14A264}</ProjectGuid>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Demo.DDD.Domain</AssemblyName>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.4.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Demo.DDD.Comum\Demo.DDD.Shared.csproj" />
+  </ItemGroup>
+</Project>

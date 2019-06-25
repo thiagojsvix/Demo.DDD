@@ -1,0 +1,81 @@
+trigger:
+- master
+pr:
+- releases/*
+variables:
+    buildConfiguration: 'Release'
+    solution: '**/*.sln'
+    buildPlatform: "Any CPU"
+
+jobs: 
+- job: Windows
+  displayName: Build all tasks (Windows)
+  pool:
+    name: Hosted VS2017
+  steps:
+  - task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
+    displayName: 'Prepare analysis on SonarCloud'
+    enabled: 'true'
+    inputs:
+      SonarCloud: 'SonarCould_Exiges.DDD'
+      organization: thiagojs
+      projectKey: Exiges.DDD
+      projectName: Exiges.DDD
+      extraProperties: |
+        sonar.exclusions="**/*.bin"
+        sonar.exclusions="**/*tests*"
+        sonar.coverage.exclusions="**Tests*.cs"
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    enabled: 'true'
+    inputs:
+      command: restore
+      projects: '**/*.csproj'
+      verbosityRestore: Normal    
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    enabled: 'true'
+    inputs:
+      projects: '**/*.csproj'
+      arguments: '--configuration $(BuildConfiguration)'
+      verbosityPack: Normal
+  - task: DotNetCoreCLI@2
+    displayName: Test
+    enabled: 'true'
+    inputs:
+      command: test
+      projects: '**/*[Tt]ests/*.csproj'
+      arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+  - task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+    displayName: 'Run Code Analysis'
+    enabled: 'true'
+  - task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@1
+    displayName: 'Publish Quality Gate Result'
+    enabled: 'true'      
+
+- job: Linux
+  displayName: Build all tasks (Linux)
+  pool:
+    name: Hosted Ubuntu 1604
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    enabled: 'true'
+    inputs:
+      command: restore
+      projects: '**/*.csproj'
+      verbosityRestore: Normal    
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    enabled: 'true'
+    inputs:
+      projects: '**/*.csproj'
+      arguments: '--configuration $(BuildConfiguration)'
+      verbosityPack: Normal
+  - task: DotNetCoreCLI@2
+    displayName: Test
+    enabled: 'true'
+    inputs:
+      command: test
+      projects: '**/*[Tt]ests/*.csproj'
+      arguments: '--configuration $(BuildConfiguration)'

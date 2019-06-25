@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Demo.DDD.Shared</AssemblyName>
+    <RootNamespace>Demo.DDD.Shared</RootNamespace>
+    <ProjectGuid>a308acec-3eac-417f-8b71-137470bf97c7</ProjectGuid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Exiges.Core.Extensions" Version="1.1.0" />
+    <PackageReference Include="Exiges.Core.Tools" Version="1.1.0" />
+    <PackageReference Include="FluentValidation" Version="8.4.0" />
+  </ItemGroup>
+
+</Project>
